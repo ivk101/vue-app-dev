@@ -1,18 +1,18 @@
 <template>
 <li class="catalog__item">
-            <a class="catalog__pic" href="#">
-              <img :src="product.image" :alt="product.title">
+            <a class="catalog__pic" href="#"> 
+              <img :src="product.image" :alt="product.title" @click.prevent="gotoPage('product', {id: product.id})">
             </a>
 
             <h3 class="catalog__title">
               <a href="#">
-                {{ product.title }}
+                {{ product.title }} 
               </a>
             </h3>
 
             <span class="catalog__price">
-              {{ product.price + ' &#8381;'}}
-            </span>
+              {{ product.price | numberFormat }} &#8381;
+            </span> 
 
             <ul class="colors colors--black">
               <li class="colors__item" v-for="col in product.colors" :key="col">
@@ -28,12 +28,21 @@
 </template>
 
 <script>
+import gotoPage from '@/helpers/gotoPage';
+import numberFormat from '@/helpers/numberFormat';
+
 export default {
   data() {
     return {
       color: '#73B6EA'
     };
   },
-	props: ['product']
+  filters: {
+    numberFormat
+  },
+	props: ['product'],
+  methods: {    
+    gotoPage
+  }
 }
 </script>
