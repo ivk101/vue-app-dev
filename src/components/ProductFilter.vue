@@ -40,7 +40,7 @@
                    <span class="colors__value" :style="{'background-color': color.code}">
                    </span>
                  </label>
-                </li>              
+                </li>                
             </ul>
           </fieldset>
 

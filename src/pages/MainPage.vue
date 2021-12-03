@@ -27,6 +27,7 @@
     </div>
   </main>
 </template>
+
 <script> 
 import products from './../data/products';
 import ProductList from "./../components/ProductList.vue";
