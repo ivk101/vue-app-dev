@@ -89,7 +89,6 @@ export default new Vuex.Store({
     		  })
     		  .catch(() => {context.state.cartLoadingFailed = true})
     		  .then(() => {context.state.cartLoading = false})
-
             }, 2000)  
     	},
     	addProductToCart(context, { productId, amount }) {
