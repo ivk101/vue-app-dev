@@ -15,11 +15,11 @@
             </span> 
 
             <ul class="colors colors--black">
-              <li class="colors__item" v-for="col in product.colors" :key="col">
+              <li class="colors__item" v-for="col in product.colors" :key="col.code">
                 <label class="colors__label">
                   <input class="colors__radio sr-only" type="radio"
-                         :value="col" v-model="color">
-                  <span class="colors__value" :style="{'background-color': col}">
+                         :value="col.code">
+                  <span class="colors__value" :style="{'background-color': col.code}">
                   </span>
                 </label>
               </li>
@@ -32,11 +32,6 @@ import gotoPage from '@/helpers/gotoPage';
 import numberFormat from '@/helpers/numberFormat';
 
 export default {
-  data() {
-    return {
-      color: '#73B6EA'
-    };
-  },
   filters: {
     numberFormat
   },

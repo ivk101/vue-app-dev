@@ -17,7 +17,9 @@
       <h1 class="content__title">
         Корзина
       </h1>
-      <span class="content__info">
+      <div v-if="cartLoading">Загрузка корзины...</div>
+      <div v-if="cartLoadingFailed && totalPosition < 1">Произошла ошибка при загрузке корзины</div>
+      <span class="content__info" v-if="!cartLoading && !cartLoadingFailed">
         {{ totalPosition }} товара
       </span>
     </div>
@@ -58,7 +60,8 @@
     components: { CartItem },
   	filters: { numberFormat },
   	computed: {
-  		...mapGetters({products: 'cartDetailProducts', totalPrice: 'cartTotalPrice', totalPosition: 'cartTotalPosition'})  		
+  		...mapGetters({products: 'cartDetailProducts', totalPrice: 'cartTotalPrice', totalPosition: 'cartTotalPosition',
+                    cartLoading: 'cartLoading', cartLoadingFailed: 'cartLoadingFailed'})  		
   	}
   }
 </script>

@@ -1,5 +1,7 @@
 <template>
-  <main class="content container">
+  <main class="content container" v-if="productLoading">Загрузка товара...</main>
+  <main class="content container" v-else-if="!productData">Не удалось загрузить товар</main>
+  <main class="content container" v-else="productData">
     <div class="content__top">
       <ul class="breadcrumbs">
         <li class="breadcrumbs__item">
@@ -99,10 +101,12 @@
                 </button>
               </div>
 
-              <button class="button button--primery" type="submit">
+              <button class="button button--primery" type="submit" :disabled="productAddSending">
                 В корзину
               </button>
             </div>
+            <div v-show="productAdded">Товар добавлен в корзину</div>
+            <div v-show="productAddSending">Добавляем товар в корзину...</div> 
           </form>
         </div>
       </div>
@@ -160,15 +164,23 @@
   </main>
 </template>
 <script>
-  import products from '@/data/products';
-  import categories from '@/data/categories';
   import gotoPage from '@/helpers/gotoPage';
   import numberFormat from '@/helpers/numberFormat';
+  import axios from 'axios';
+  import { API_BASE_URL } from '../config';
+  import { mapActions } from 'vuex';
 
   export default {
     data() {
       return {
         productAmount: 1,
+        productData: null,
+
+        productLoading: false,
+        productLoadingFailed: false,
+
+        productAdded: false,
+        productAddSending: false
       }
     },
   	filters: {
@@ -176,21 +188,29 @@
   	},
   	computed: {
   		product() {
-  			return products.find(product => product.id === +this.$route.params.id)
+  			return this.productData 
+        ?{...this.productData, image: this.productData.image.file.url}
+        :{}
   		},
   		category() {
-  			return categories.find(category => category.id === this.product.categoryId)
-  		}
+  			return this.productData.category;
+      }
   	},
   	methods: {
+        ...mapActions(['addProductToCart']),
         gotoPage,
         addToCart() {
-          this.$store.commit('addProductToCart',
-            {
+          this.productAdded = false;
+          this.productAddSending = true;
+
+          this.addProductToCart({
               productId: this.product.id,
               amount: this.productAmount
-            }
-          )
+            })
+            .then(() => {
+              this.productAdded = true;
+              this.productAddSending = false;
+            })
         },
         incrementAmount() {
           return ++this.productAmount
@@ -199,7 +219,24 @@
           if(this.productAmount > 1) {
             return --this.productAmount
           }
+        },
+        loadProduct() {
+          this.productLoading = true;
+          this.productLoadingFailed = false;
+
+          axios.get(API_BASE_URL + '/api/products/' + this.$route.params.id)
+               .then(response => this.productData = response.data)
+               .catch(() => this.productLoadingFailed = true)
+               .then(() => this.productLoading = false)
         }
+    },    
+    watch: {
+      '$route.params.id': {
+        handler() {
+          this.loadProduct();
+        },
+        immediate: true
+      }
     }
   }
 
