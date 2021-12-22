@@ -71,9 +71,8 @@ export default new Vuex.Store({
     	loadCart(context) {
     		context.state.cartLoading = true;
     		context.state.cartLoadingFailed = false;
-
-            setTimeout(() => {
-               axios
+                        
+           return axios
     		  .get(API_BASE_URL + '/api/baskets', {
     		  	params: {
     		  		userAccessKey: context.state.userAccessKey
@@ -89,11 +88,9 @@ export default new Vuex.Store({
     		  })
     		  .catch(() => {context.state.cartLoadingFailed = true})
     		  .then(() => {context.state.cartLoading = false})
-            }, 2000)  
+             
     	},
-    	addProductToCart(context, { productId, amount }) {
-    		return (new Promise(resolve => setTimeout(resolve, 0)))
-    		.then(() => {
+    	addProductToCart(context, { productId, amount }) {    		
     		return axios
     		.post(API_BASE_URL + '/api/baskets/products', {    			
     			    productId: productId,
@@ -106,8 +103,6 @@ export default new Vuex.Store({
     		.then(response => {
     			context.commit('updateCartProductsData', response.data.items);
     			context.commit('syncCartProducts');
-    		})
-
     		})
     	},
     	updateCartProductAmount(context, { productId, amount }) {

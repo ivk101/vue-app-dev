@@ -10,6 +10,7 @@
               </svg>
             </a>
           </li>
+          
           <li class="pagination__item"
               v-for="pageNumber in pages"
               :key="pageNumber">
@@ -19,8 +20,7 @@
                @click.prevent = "paginate(pageNumber)">
               {{ pageNumber }}
             </a>
-          </li>
-          
+          </li>        
           
           <li class="pagination__item">
             <a class="pagination__link pagination__link--arrow" 
@@ -44,13 +44,17 @@
     	props: ['page', 'count', 'perPage'],
     	methods: {
     		paginate(page) {
-    			this.$emit('paginate', page)
+          this.$emit('paginate', page)               			
     		},
     		prevPage() {
-    			this.$emit('paginate', this.page - 1)
+          if(this.page > 1) {
+            this.$emit('paginate', this.page - 1)
+          }    			
     		},
     		nextPage() {
-    			this.$emit('paginate', this.page + 1)
+          if(this.page < this.pages) {
+    			  this.$emit('paginate', this.page + 1)
+          }
     		}
     	},
     	computed: {
