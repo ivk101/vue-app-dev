@@ -12,7 +12,9 @@ export default new Vuex.Store({
 		cartProductsData: [],
 
 		cartLoading: false,
-		cartLoadingFailed: false
+		cartLoadingFailed: false,
+
+		orderInfo: null
 	},
 	mutations: {
 		updateCartProductAmount(state, { productId, amount }) {
@@ -38,6 +40,13 @@ export default new Vuex.Store({
 					amount: item.quantity
 				}
 			})
+		},
+		resetCart(state) {
+			state.cartProducts = [],
+			state.cartProductsData = []
+		},
+		updateOrderInfo(state, orderInfo) {
+			state.orderInfo = orderInfo;
 		}
 	},
 	getters: {
@@ -146,6 +155,17 @@ export default new Vuex.Store({
     		})
     		.catch(() => {
     			context.commit('syncCartProducts')
+    		})
+    	},
+    	loadOrderInfo(context, orderId) {
+    		return axios
+    		.get(API_BASE_URL + '/api/orders' + orderId, {
+    			params: {
+    				userAccessKey: context.state.userAccessKey
+    			}
+    		})
+    		.then(response => {
+    			context.commit('updateOrderInfo', response.data)
     		})
     	}
     }	
