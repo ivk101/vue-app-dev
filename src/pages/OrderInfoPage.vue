@@ -78,7 +78,7 @@
 
         <div class="cart__block">
           <ul class="cart__orders">
-            <li class="cart__order" v-for="item in orderInfo.basket.items">
+            <li class="cart__order" v-for="item in orderInfoItems">
               <h3>{{ item.product.title }}</h3>
               <b>{{ (item.quantity * item.product.price) | numberFormat }} &#8381;</b>
               <span>Артикул: {{ item.product.id || numberFormat }}</span>
@@ -87,12 +87,12 @@
           
           <div class="cart__total">
             <p>Доставка: <b>500 &#8381;</b></p>
-            <p>Итого: <b>{{ orderInfo.basket.items.length }}</b> товара на сумму <b>{{ (totalPriceInfo + 500) | numberFormat }} &#8381;</b></p>
+            <p>Итого: <b>{{ totalPositionInfo }}</b> товара на сумму <b>{{ (totalPriceInfo + 500) | numberFormat }} &#8381;</b></p>
           </div>
         </div>
       </form>
     </section>
-  </main>
+  </main> 
 </template>
 
 <script>
@@ -102,12 +102,8 @@ import numberFormat from "@/helpers/numberFormat";
 export default {
 	filters: { numberFormat },
 	computed: {
-      ...mapGetters({products: 'cartDetailProducts', totalPrice: 'cartTotalPrice', totalPosition: 'cartTotalPosition'}),
-      ...mapState({orderInfo: 'orderInfo'}),
-      totalPriceInfo() {
-      	return this.orderInfo.basket.items.reduce((acc, item) => 
-				(item.product.price * item.quantity) + acc, 0);
-		}     
+      ...mapGetters({orderInfoItems: 'orderInfoItems', totalPriceInfo: 'totalPriceInfo', totalPositionInfo: 'totalPositionInfo'}),
+      ...mapState({orderInfo: 'orderInfo'})      
     },
 	created() {
 		if(this.$store.state.orderInfo && this.$store.state.orderInfo.id === this.$route.params.id) {      

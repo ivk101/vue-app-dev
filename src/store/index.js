@@ -74,6 +74,22 @@ export default new Vuex.Store({
 		},
 		cartLoadingFailed(state) {
 			return state.cartLoadingFailed;
+		},
+		orderInfoItems(state) {
+			if(state.orderInfo) {
+			      return state.orderInfo.basket.items;
+		       }
+		},
+		totalPriceInfo(state) {
+			if(state.orderInfo) {
+      	                    return state.orderInfo.basket.items.reduce((acc, item) => 
+				(item.product.price * item.quantity) + acc, 0);
+      	              }
+		},
+		totalPositionInfo(state) {
+			if(state.orderInfo) {
+			       return state.orderInfo.basket.items.length;
+			}
 		}
     },
     actions: {
