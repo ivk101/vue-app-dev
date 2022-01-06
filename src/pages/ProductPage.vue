@@ -43,10 +43,10 @@
             <fieldset class="form__block">
               <legend class="form__legend">Цвет:</legend>
               <ul class="colors">
-                <li class="colors__item" v-for="color in product.colors" :key="color">
+                <li class="colors__item" v-for="color in product.colors" :key='color.code'>
                   <label class="colors__label">
-                    <input class="colors__radio sr-only" type="radio" name="color-item" :value="color">
-                    <span class="colors__value" :style="{'background-color': color}">
+                    <input class="colors__radio sr-only" type="radio" name="color-item" :value="color.code">
+                    <span class="colors__value" :style="{'background-color': color.code}">                    
                     </span>
                   </label>
                 </li>                
@@ -57,9 +57,9 @@
               <legend class="form__legend">Объемб в ГБ:</legend>
 
               <ul class="sizes sizes--primery">
-                <li class="sizes__item" v-for="color in product.colors" :key="color">
+                <li class="sizes__item">
                   <label class="sizes__label">
-                    <input class="sizes__radio sr-only" type="radio" name="sizes-item" :value="color" >
+                    <input class="sizes__radio sr-only" type="radio" name="sizes-item" value="32" >
                     <span class="sizes__value">
                       32gb
                     </span>

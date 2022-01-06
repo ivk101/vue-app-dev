@@ -55,7 +55,9 @@ export default {
       productsData: null,
 
       productsLoading: false,
-      productsLoadingFailed: false
+      productsLoadingFailed: false,
+
+      loadProductsTimer: null
     }
   },  
   computed: {
@@ -78,7 +80,7 @@ export default {
       this.productsLoading = true;
       this.productsLoadingFailed = false;
       clearTimeout(this.loadProductsTimer);      
-      loadProductsTimer = setTimeout(() => {
+      this.loadProductsTimer = setTimeout(() => {
         axios.get(API_BASE_URL + '/api/products', {
           params: {
             page: this.page,

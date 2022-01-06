@@ -32,7 +32,7 @@
             Наши менеджеры свяжутся с&nbsp;Вами в&nbsp;течение часа для уточнения деталей доставки.
           </p>
 
-          <ul class="dictionary">
+          <ul class="dictionary" v-if="orderInfo">
             <li class="dictionary__item">
               <span class="dictionary__key">
                 Получатель
@@ -113,7 +113,6 @@ export default {
 		if(this.$store.state.orderInfo && this.$store.state.orderInfo.id === this.$route.params.id) {      
 			return;
 		}
-    console.log(this.$route.params.id)
 		this.$store.dispatch('loadOrderInfo', this.$route.params.id)
 	}
 } 

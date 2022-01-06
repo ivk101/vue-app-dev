@@ -159,7 +159,7 @@ export default new Vuex.Store({
     	},
     	loadOrderInfo(context, orderId) {
     		return axios
-    		.get(API_BASE_URL + '/api/orders' + orderId, {
+    		.get(API_BASE_URL + '/api/orders/' + orderId, {
     			params: {
     				userAccessKey: context.state.userAccessKey
     			}
